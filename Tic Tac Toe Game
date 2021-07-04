@@ -1,0 +1,66 @@
+import tkinter as tk
+root = tk.Tk()
+root.minsize(500,500)
+root.maxsize(500,500)
+root.title("Welcome To Tic Tac Toe Game")
+bord = [[0,0,0],
+     [0,0,0],
+     [0,0,0]
+    ]
+dis_table = [[0,0,0],
+     [0,0,0],
+     [0,0,0]
+    ]
+player = "X"
+stop_game = False
+
+def check_winner(bord,x_or_o) :
+    return ((bord[0][0] == x_or_o and bord[0][1] == x_or_o and bord[0][2] == x_or_o) or
+            (bord[1][0] == x_or_o and bord[1][1] == x_or_o and bord[1][2] == x_or_o) or
+            (bord[2][0] == x_or_o and bord[2][1] == x_or_o and bord[2][2] == x_or_o) or
+            (bord[0][0] == x_or_o and bord[1][0] == x_or_o and bord[2][0] == x_or_o) or
+            (bord[0][1] == x_or_o and bord[1][1] == x_or_o and bord[2][1] == x_or_o) or
+            (bord[0][2] == x_or_o and bord[1][2] == x_or_o and bord[2][2] == x_or_o) or
+            (bord[0][0] == x_or_o and bord[1][1] == x_or_o and bord[2][2] == x_or_o) or
+            (bord[0][2] == x_or_o and bord[1][1] == x_or_o and bord[2][0] == x_or_o))
+
+def is_full() :
+    x = True
+    for i in range (3) :
+        for j in range (3) :
+            x = x and bord[i][j]
+    return x
+
+def fill_bord(i,j) :
+    global player
+    global stop_game
+    #print(i,j)
+    if(player == "X" and bord[i][j] == 0 and stop_game == False) :
+        dis_table[i][j].configure(text="X",bg="red")
+        bord[i][j] = 'X'
+        player="O"
+    if(player == "O" and bord[i][j] == 0 and stop_game == False) :
+        dis_table[i][j].configure(text="O",bg="green")
+        bord[i][j] = 'O'
+        player="X"
+    x_or_o=0
+    if(player == "X") :
+        x_or_o = "O"
+    else :
+        x_or_o = "X"
+    stop_game = check_winner(bord,x_or_o)
+    if(stop_game == True) :
+         #print("winner is : ", x_or_o)
+        info.configure(text="Winner is : "+x_or_o)
+    elif(is_full()) :
+        info.configure(text="Match Draw")
+    else :
+        info.configure(text=player+" Turn")
+for i in range (3) : 
+    for j in range (3) :
+        dis_table[i][j] = tk.Button(font=("Arial",35),bg="gray",width=6,height=2,command = lambda row=i,col=j : fill_bord(row,col))
+        dis_table[i][j].grid(row=i,column=j)
+
+info = tk.Label(font=("Arial",20),text="X turn")
+info.grid()
+root.mainloop()
